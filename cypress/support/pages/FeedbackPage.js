@@ -1,56 +1,60 @@
 import BasePage from "./BasePage";
 
 class FeedbackPage extends BasePage {
+
     constructor() {
-        super()
-        this.elements.emailField = '#emailControl';
-        
+        super();
+        this.elements.comment = '#comment';
+        this.elements.rating = '#rating';
+        this.elements.captchaField = '#captchaControl';
+        this.elements.captcha = '#captcha';
+        this.elements.submitButton = '#submitButton';
+        this.elements.notification = '.mat-simple-snack-bar-content';
+
     }
 
     visit() {
-        cy.log('Open Registration Page');
-        loginPage.openRegistrationPage();
+        cy.log('Open Feedback Page');
+        cy.visit('/#/contact');
     }
 
-    getEmailField() {
-        return cy.get(this.elements.emailField);
+    getCommentField() {
+        return cy.get(this.elements.comment)
     }
 
-    
-    /**
-         *  Fill in registration fields
-         *  @param {Object} user - user object
-         *  User object example can be found in ./cypress/fixtures/user.json
-         */
-
-    fillRegistrationFields(user) {
-        cy.log('Fill In Registration Form and Submit');
-        this.getEmailField().type(user.email);
-        this.getPasswordField().type(user.password);
-        this.getConfirmPasswordField().type(user.confirmPassword);
-        this.getSecurityDropdown().click({ force: true });
-        this.getListbox();
-        this.getSecurityQuestion().click();
-        this.getAnswerField().type(user.answer);
-        this.getRegistrationButton().click()
+    getRatingLine() {
+        return cy.get(this.elements.rating)
     }
 
-    getOutside() {
-        return cy.get(this.elements.outside);
+    getCaptchaField() {
+        return cy.get(this.elements.captchaField)
     }
 
-    emptyRegistrationFields() {
-        cy.log('Empty Registration Fields');
-        this.getEmailField().click();
-        this.getPasswordField().click();
-        this.getConfirmPasswordField().click();        
-        this.getAnswerField().click();
-        this.getSecurityDropdown().click({ force: true });
-        this.getOutside().click()        
+    getCaptcha() {
+        return cy.get(this.elements.captcha)
     }
-     
-}
 
-export default new FeedbackPage()
+    getSubmitButton() {
+        return cy.get(this.elements.submitButton)
+    }
 
+    getConfirmationMessage() {
+        return cy.get(this.elements.notification)
+    }
 
+    solveCaptcha() {
+        this.getCaptcha().then((captcha) => {
+            let result = eval(captcha.text());
+            this.getCaptchaField().type(result);
+        })
+    }
+
+    leaveFeedback(feedback) {
+        cy.log('Fill and Confirm Feedback Form');
+        this.getCommentField().type(feedback);
+        this.getRatingLine().click('bottomRight');
+        this.solveCaptcha();
+        this.getSubmitButton().click();
+    }
+
+} export default new FeedbackPage
