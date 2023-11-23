@@ -48,7 +48,7 @@ class FeedbackPage extends BasePage {
         this.getSecurityDropdown().click({ force: true });
         this.getOutside().click()        
     }
-  
+     
 }
 
 export default new FeedbackPage()

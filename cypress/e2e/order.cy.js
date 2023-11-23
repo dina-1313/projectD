@@ -26,21 +26,20 @@ describe('Successful Order', () => {
     homePage.visit();
     registrationPage.register(user);
     loginPage.login(user);
+    orderPage.addToCart();
   })
 
   it('Successful Order', () => {
-     
-    orderPage.addToCart();
+    const req = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        orderPage.completeFullOrder(order);
+        resolve();
+      }, 2000)
+    })
+    req.then(() => {
+      console.log('Order is Made')
+    })
 
-    cy.wait(2000);
-
-    orderPage.openAddDeliveryAddressForm();
-    orderPage.fillAddressForm(order);
-    orderPage.chooseAddress();
-    orderPage.chooseDeliverySpeed();
-    orderPage.addCard(order);
-    orderPage.chooseCard();
-    orderPage.checkIfOrderIsPlaced()
   })
 
 })
