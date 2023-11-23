@@ -1,0 +1,7 @@
+{
+  "email": "email1@test.com",
+  "password": "Test_23456",
+  "confirmPassword": "Test_23456",
+  "answer": "testAnswer",
+  "passwordIncorrect": "0000"
+}
